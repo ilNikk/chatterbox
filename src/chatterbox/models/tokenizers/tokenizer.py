@@ -59,7 +59,6 @@ REPO_ID = "ResembleAI/chatterbox"
 # Global instances for optional dependencies
 _kakasi = None
 _dicta = None
-_russian_stresser = None
 
 
 def is_kanji(c: str) -> bool:
@@ -234,23 +233,7 @@ class ChineseCangjieConverter:
         return "".join(output)
 
 
-def add_russian_stress(text: str) -> str:
-    """Russian text normalization: adds stress marks to Russian text."""
-    global _russian_stresser
-    
-    try:
-        if _russian_stresser is None:
-            from russian_text_stresser.text_stresser import RussianTextStresser
-            _russian_stresser = RussianTextStresser()
-        
-        return _russian_stresser.stress_text(text)
-        
-    except ImportError:
-        logger.warning("russian_text_stresser not available - Russian stress labeling skipped")
-        return text
-    except Exception as e:
-        logger.warning(f"Russian stress labeling failed: {e}")
-        return text
+
 
 
 class MTLTokenizer:
@@ -294,8 +277,6 @@ class MTLTokenizer:
             txt = add_hebrew_diacritics(txt)
         elif language_id == 'ko':
             txt = korean_normalize(txt)
-        elif language_id == 'ru':
-            txt = add_russian_stress(txt)
         
         # Prepend language token
         if language_id:
