@@ -87,6 +87,51 @@ ta.save("test-2.wav", wav, model.sr)
 ```
 See `example_tts.py` and `example_vc.py` for more examples.
 
+# Quick Start: Interactive TTS with Voice Checkpoint
+
+For fast, interactive speech generation with your own voice, use the included training and generation scripts:
+
+## Setup (One-time)
+
+1. **Prepare your reference audio** (`train.wav`):
+   - Use a clear voice sample (5-30 seconds)
+   - Place it in the project directory
+
+2. **Train the voice checkpoint**:
+   ```shell
+   python train_voice.py
+   ```
+   This extracts your voice characteristics and saves them to `voice_checkpoint.pt`
+
+## Usage (Interactive Loop)
+
+Run the interactive generator:
+```shell
+python main.py
+```
+
+Then enter text prompts interactively:
+```
+📝 Enter text (or 'quit' to exit): Ciao, come stai?
+🎤 Generating audio in Italian...
+✅ Saved to: output_1.wav
+
+📝 Enter text (or 'quit' to exit): Questo è fantastico!
+🎤 Generating audio in Italian...
+✅ Saved to: output_2.wav
+```
+
+**Benefits**:
+- Model and voice load once at startup
+- Fast generation on subsequent prompts
+- GPU memory stays allocated for speed
+- Output files save with automatic naming
+
+**Parameters**:
+- `TEMPERATURE = 0.6` - Controls generation speed (lower = faster)
+- `REPETITION_PENALTY = 1.5` - Prevents repetitive speech
+- `language_id = "it"` - Currently set to Italian (editable in main.py)
+
 # Acknowledgements
 - [Cosyvoice](https://github.com/FunAudioLLM/CosyVoice)
 - [Real-Time-Voice-Cloning](https://github.com/CorentinJ/Real-Time-Voice-Cloning)
